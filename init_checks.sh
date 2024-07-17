@@ -4,7 +4,7 @@ FILENAME=$1
 CONTAINERNAME=$2
 
 if [ ! "$FILENAME" -o ! "$CONTAINERNAME" ]; then
-    echo "USAGE: clouduploader /path/to/file.txt container-name [OPTION]..."
+    echo "USAGE: clouduploader /path/to/file.txt container-name"
     exit 1
 fi
 
