@@ -5,7 +5,6 @@
 FILENAME=$1
 
 # TODO: move all if statements to init_checks.sh 
-# TODO: fix known bug: if filename is specified with ./ or ../ it will not upload. SOLUTION?: cp file to project root and then upload
 
 if [ ! "$FILENAME" ]; then
     echo "USAGE: clouduploader /path/to/file.txt"
@@ -29,10 +28,15 @@ if [ ! "$SUBSCRIPTION_ID" -o ! "$ACCOUNT_NAME" -o ! "$AZURE_STORAGE_KEY" ]; then
     exit 1
 fi
 
-# TODO: add container name param 
-az storage blob upload --account-name $ACCOUNT_NAME --container-name files --name $FILENAME --file $FILENAME --auth-mode key --account-key $AZURE_STORAGE_KEY
+# filename without ./ or ../ 
+NAME=$(echo "$FILENAME" | sed -e 's@\.\./@@g' -e 's@\.\/@@g' -e 's@.*/@@')
+cp "$FILENAME" "$NAME"
 
-echo $?
+# TODO: add container name param 
+az storage blob upload --account-name $ACCOUNT_NAME --container-name files --name $NAME --file $NAME --auth-mode key --account-key $AZURE_STORAGE_KEY
+
+# cleanup copied file
+rm "$NAME"
 
 echo done
 exit 0
