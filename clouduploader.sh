@@ -7,6 +7,9 @@ FILENAME=$1
 CONTAINERNAME=$2
 source .clouduploaderconfig 2> /dev/null
 
+# local run:
+source .env 2> /dev/null
+
 if [ ! "$FILENAME" -o ! "$CONTAINERNAME" ]; then
     echo "USAGE: clouduploader /path/to/file.txt container-name"
     exit 1
