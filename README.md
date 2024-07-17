@@ -6,7 +6,7 @@ A CLI tool that can upload files to Azure Storage Accounts. Built using bash and
 
 ## Setup
 
-1. Must have Azure CLI instaslled. https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
+1. Must have Azure CLI installed. https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
 2. Configure the .env file at the root of this project with the following values: 
     ```
     SUBSCRIPTION_ID= 
