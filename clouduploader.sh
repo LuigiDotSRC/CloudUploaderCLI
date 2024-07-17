@@ -2,14 +2,26 @@
 
 # USAGE: clouduploader /path/to/file.txt container-name 
 
-bash ./init_checks.sh $@ 
-if [ ! $? -eq 0 ]; then 
-    exit 1
-fi
 
 FILENAME=$1
 CONTAINERNAME=$2
-source .env
+source .clouduploaderconfig 2> /dev/null
+
+if [ ! "$FILENAME" -o ! "$CONTAINERNAME" ]; then
+    echo "USAGE: clouduploader /path/to/file.txt container-name"
+    exit 1
+fi
+
+if [ ! -f $FILENAME ]; then
+    echo "File does not exist" 
+    exit 1
+fi
+
+if [ ! "$SUBSCRIPTION_ID" -o ! "$ACCOUNT_NAME" -o ! "$AZURE_STORAGE_KEY" ]; then
+    echo ".clouduploaderconfig not configured correctly"
+    exit 1
+fi
+
 
 # filename without ./ or ../ 
 NAME=$(echo "$FILENAME" | sed -e 's@\.\./@@g' -e 's@\.\/@@g' -e 's@.*/@@')
@@ -33,5 +45,9 @@ fi
 
 # cleanup copied file
 rm "$NAME"
+
+if [ $? -eq 0 ]; then
+    echo "Success!"
+fi
 
 exit 0
